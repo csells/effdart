@@ -17,7 +17,7 @@ class App extends StatelessWidget {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) => const HomePage(),
       ),
     ],
   );
@@ -29,19 +29,19 @@ class App extends StatelessWidget {
       );
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(title: const Text(App.title)),
-        body: MarkdownAssetPage(Assets.bookContent.index),
+        body: MarkdownFromAssetView(Assets.bookContent.index),
       );
 }
 
 // TODO: implement support for links
-class MarkdownAssetPage extends StatelessWidget {
-  const MarkdownAssetPage(this.assetPath, {super.key});
+class MarkdownFromAssetView extends StatelessWidget {
+  const MarkdownFromAssetView(this.assetPath, {super.key});
 
   final String assetPath;
 

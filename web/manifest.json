@@ -1,6 +1,6 @@
 {
-    "name": "dartbook",
-    "short_name": "dartbook",
+    "name": "effdart",
+    "short_name": "effdart",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

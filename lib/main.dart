@@ -1,25 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:go_router/go_router.dart';
 
 import 'app_future_builder.dart';
 import 'gen/assets.gen.dart';
 
-void main() => runApp(const App());
+void main() => runApp(App());
 
 class App extends StatelessWidget {
-  const App({super.key});
+  App({super.key});
+
   static const title = 'Effective Dart';
+
+  final _router = GoRouter(
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const HomeScreen(),
+      ),
+    ],
+  );
+
   @override
-  Widget build(BuildContext context) => const MaterialApp(
-        title: title,
-        home: HomePage(),
+  Widget build(BuildContext context) => MaterialApp.router(
+        routerConfig: _router,
         debugShowCheckedModeBanner: false,
       );
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(

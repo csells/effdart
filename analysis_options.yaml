@@ -33,5 +33,4 @@ linter:
     one_member_abstracts: false # interfaces can have a single method
     flutter_style_todos: false # I'm too lazy for this...
     diagnostic_describe_all_properties: false # too annoying for StatefulWidget
-    # library_private_types_in_public_api: false # too annoying for StatefulWidget
-    
+    library_private_types_in_public_api: false # too annoying for StatefulWidget

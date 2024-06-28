@@ -1,179 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'app_future_builder.dart';
+import 'gen/assets.gen.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+void main() => runApp(const App());
 
+class App extends StatelessWidget {
+  const App({super.key});
+  static const title = 'Effective Dart';
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        title: 'Flutter Book UI',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const HomeScreen(),
+  Widget build(BuildContext context) => const MaterialApp(
+        title: title,
+        home: HomePage(),
+        debugShowCheckedModeBanner: false,
       );
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Home Screen'),
-        ),
-        body: Row(
-          children: [
-            // Left Sidebar
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: Colors.grey[200],
-                child: const NavigationSidebar(),
-              ),
-            ),
-            // Center Book Text + Settings
-            const Expanded(
-              flex: 3,
-              child: ColoredBox(
-                color: Colors.white,
-                child: BookText(),
-              ),
-            ),
-            // Right Sidebar
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: Colors.grey[300],
-                child: const InteractionSidebar(),
-              ),
-            ),
-          ],
-        ),
+        appBar: AppBar(title: const Text(App.title)),
+        body: MarkdownAssetPage(Assets.bookContent.index),
       );
 }
 
-class NavigationSidebar extends StatelessWidget {
-  const NavigationSidebar({super.key});
+// TODO: implement support for links
+class MarkdownAssetPage extends StatelessWidget {
+  const MarkdownAssetPage(this.assetPath, {super.key});
+
+  final String assetPath;
 
   @override
-  Widget build(BuildContext context) => ListView(
-        padding: const EdgeInsets.all(8),
-        children: const [
-          Text('Chapter:', style: TextStyle(fontWeight: FontWeight.bold)),
-          ListTile(title: Text('1 - Why Flutter?')),
-          ListTile(title: Text('2 - Playing Darts')),
-          ListTile(title: Text('3 - Widgets')),
-          ListTile(title: Text('4 - Dino Dicks')),
-          SizedBox(height: 20),
-          Text('Chapter Exercises:',
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          ListTile(title: Text('Hello, Dart!')),
-          ListTile(title: Text('Hello, Flutter!')),
-          ListTile(title: Text('Strings')),
-          ListTile(title: Text('Ints, Bools, Calc')),
-          SizedBox(height: 20),
-          Text('Bookmarks and Notes:',
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          ListTile(title: Text('---')),
-          ListTile(title: Text('---')),
-          ListTile(title: Text('---')),
-        ],
+  Widget build(BuildContext context) => AppFutureBuilder<String>(
+        // ignore: discarded_futures
+        future: _loadMarkdown(assetPath),
+        builder: (context, data) => Markdown(data: data),
       );
-}
 
-class BookText extends StatelessWidget {
-  const BookText({super.key});
-
-  @override
-  Widget build(BuildContext context) => const Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Text(
-              'Chapter 1: Why Flutter?',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'In 2016, the company product lorem ipsum...',
-              style: TextStyle(fontSize: 18),
-            ),
-            // Add more text content here
-          ],
-        ),
-      );
-}
-
-class InteractionSidebar extends StatelessWidget {
-  const InteractionSidebar({super.key});
-
-  @override
-  Widget build(BuildContext context) => Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Scratchpad',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    color: Colors.white,
-                    height: 200,
-                    child: const Text(
-                      '10 PRINT "Hi"\n'
-                      '20 GOTO 30\n'
-                      '25 REM Line 25\n'
-                      '30 GOTO 20',
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Output',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    color: Colors.white,
-                    height: 100,
-                    child: const Center(child: Text('Hi!')),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const Divider(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Chat',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    color: Colors.white,
-                    height: 200,
-                    child: const Text(
-                      'Why so many virgins?'
-                      '\n\nGreat question! Scientists have studied...',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      );
+  // TODO: implement %include from index.md
+  // TODO: implement %comment/endcomment from _toc.md
+  Future<String> _loadMarkdown(String assetPath) async {
+    final md = await rootBundle.loadString(assetPath);
+    // remove markdown annotations
+    return md.replaceFirst(RegExp(r'^---[\s\S]*?---\s*'), '');
+  }
 }

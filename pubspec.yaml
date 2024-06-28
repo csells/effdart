@@ -1,0 +1,20 @@
+name: dartbook
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.1 <4.0.0'
+
+dependencies:
+  cupertino_icons: ^1.0.6
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  all_lint_rules_community: ^0.0.40
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

@@ -29,12 +29,52 @@ class App extends StatelessWidget {
       );
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  static const _sections = [
+    'Overview',
+    'Style',
+    'Documentation',
+    'Design',
+    'Summary',
+  ];
+
+  var _selectedIndex = 0;
+
+  @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text(App.title)),
+        appBar: AppBar(
+          title: const Text(App.title),
+          leading: Builder(
+            builder: (context) => IconButton(
+              onPressed: () => Scaffold.of(context).openDrawer(),
+              icon: const Icon(Icons.toc),
+            ),
+          ),
+        ),
+        drawer: Drawer(
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              for (final i in _sections.indexed)
+                ListTile(
+                  title: Text(i.$2),
+                  selected: _selectedIndex == i.$1,
+                  onTap: () {
+                    setState(() => _selectedIndex = i.$1);
+                    Navigator.pop(context);
+                  },
+                ),
+            ],
+          ),
+        ),
         body: MarkdownFromAssetView(Assets.bookContent.index),
       );
 }

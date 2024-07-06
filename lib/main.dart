@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:go_router/go_router.dart';
+import 'package:split_view/split_view.dart';
 
 import 'app_future_builder.dart';
 import 'gen/assets.gen.dart';
@@ -75,7 +76,19 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: MarkdownFromAssetView(Assets.bookContent.index),
+        body: SplitView(
+          viewMode: SplitViewMode.Horizontal,
+          indicator: const SplitIndicator(
+            viewMode: SplitViewMode.Horizontal,
+          ),
+          children: [
+            MarkdownFromAssetView(Assets.bookContent.index),
+            const ColoredBox(
+              color: Colors.blue,
+              child: Text('TODO: Chat'),
+            ),
+          ],
+        ),
       );
 }
 

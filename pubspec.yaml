@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   flutter_markdown: ^0.7.2+1
   go_router: ^14.2.0
+  split_view: ^3.2.1
 
 dev_dependencies:
   all_lint_rules_community: ^0.0.40

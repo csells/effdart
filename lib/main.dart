@@ -78,8 +78,12 @@ class _HomePageState extends State<HomePage> {
         ),
         body: SplitView(
           viewMode: SplitViewMode.Horizontal,
-          indicator: const SplitIndicator(
-            viewMode: SplitViewMode.Horizontal,
+          indicator: Transform.rotate(
+            angle: 1.5708, // 90 degrees * π/180
+            child: const Icon(
+              Icons.drag_handle,
+              color: Colors.white,
+            ),
           ),
           children: [
             MarkdownFromAssetView(Assets.bookContent.index),

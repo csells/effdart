@@ -66,12 +66,16 @@ class _HomePageState extends State<HomePage> {
               builder: (context) => IconButton(
                 onPressed: () => Scaffold.of(context).openDrawer(),
                 icon: const Icon(Icons.toc),
+                tooltip: 'Table of Contents',
               ),
             ),
             actions: [
               IconButton(
                 onPressed: () => setState(() => _showChat = !_showChat),
-                icon: const Icon(Icons.chat),
+                icon: const Icon(Icons.chat_bubble_outline),
+                selectedIcon: const Icon(Icons.chat_bubble),
+                isSelected: _showChat,
+                tooltip: _showChat ? 'Hide Chat Panel' : 'Show Chat Panel',
               ),
             ]),
         drawer: Drawer(

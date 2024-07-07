@@ -33,6 +33,8 @@ class _HomePageState extends State<HomePage> {
     ],
   );
 
+  // splitter look 'n' feel inspired by:
+  // https://medium.com/@leonar.d/how-to-create-a-flutter-split-view-7e2ac700ea12
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(

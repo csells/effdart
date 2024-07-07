@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:split_view/split_view.dart';
 
 import '../gen/assets.gen.dart';
+import '../views/chat_view.dart';
 import '../views/markdown_from_asset_view.dart';
 
 class HomePage extends StatefulWidget {
@@ -83,13 +84,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 children: [
                   MarkdownFromAssetView(Assets.bookContent.index),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(minWidth: 500),
-                    child: const ColoredBox(
-                      color: Colors.blue,
-                      child: Text('TODO: Chat'),
-                    ),
-                  ),
+                  const ChatView(),
                 ],
               )
             : MarkdownFromAssetView(Assets.bookContent.index),

@@ -22,6 +22,6 @@ class App extends StatelessWidget {
         routerConfig: _router,
         debugShowCheckedModeBanner: false,
         // TODO: fix app color
-        theme: ThemeData(primaryColor: Colors.blue),
+        theme: ThemeData(colorSchemeSeed: Colors.blue),
       );
 }

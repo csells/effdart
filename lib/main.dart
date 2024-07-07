@@ -47,18 +47,33 @@ class _HomePageState extends State<HomePage> {
   ];
 
   var _selectedIndex = 0;
+  var _showChat = false;
+  static const _chatPanelWeight = 0.3;
+
+  final _controller = SplitViewController(
+    weights: [1.0 - _chatPanelWeight, _chatPanelWeight],
+    limits: [
+      WeightLimit(min: 0.3, max: 0.7),
+      WeightLimit(min: 0.3, max: 0.7),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text(App.title),
-          leading: Builder(
-            builder: (context) => IconButton(
-              onPressed: () => Scaffold.of(context).openDrawer(),
-              icon: const Icon(Icons.toc),
+            title: const Text(App.title),
+            leading: Builder(
+              builder: (context) => IconButton(
+                onPressed: () => Scaffold.of(context).openDrawer(),
+                icon: const Icon(Icons.toc),
+              ),
             ),
-          ),
-        ),
+            actions: [
+              IconButton(
+                onPressed: () => setState(() => _showChat = !_showChat),
+                icon: const Icon(Icons.chat),
+              ),
+            ]),
         drawer: Drawer(
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
           child: ListView(
@@ -76,23 +91,29 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: SplitView(
-          viewMode: SplitViewMode.Horizontal,
-          indicator: Transform.rotate(
-            angle: 1.5708, // 90 degrees * π/180
-            child: const Icon(
-              Icons.drag_handle,
-              color: Colors.white,
-            ),
-          ),
-          children: [
-            MarkdownFromAssetView(Assets.bookContent.index),
-            const ColoredBox(
-              color: Colors.blue,
-              child: Text('TODO: Chat'),
-            ),
-          ],
-        ),
+        body: _showChat
+            ? SplitView(
+                viewMode: SplitViewMode.Horizontal,
+                controller: _controller,
+                indicator: Transform.rotate(
+                  angle: 1.5708, // 90 degrees * π/180
+                  child: const Icon(
+                    Icons.drag_handle,
+                    color: Colors.white,
+                  ),
+                ),
+                children: [
+                  MarkdownFromAssetView(Assets.bookContent.index),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(minWidth: 500),
+                    child: const ColoredBox(
+                      color: Colors.blue,
+                      child: Text('TODO: Chat'),
+                    ),
+                  ),
+                ],
+              )
+            : MarkdownFromAssetView(Assets.bookContent.index),
       );
 }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:split_view/split_view.dart';
 
 import '../gen/assets.gen.dart';
@@ -51,9 +52,7 @@ class _HomePageState extends State<HomePage> {
             actions: [
               IconButton(
                 onPressed: () => setState(() => _showChat = !_showChat),
-                icon: const Icon(Icons.chat_bubble_outline),
-                selectedIcon: const Icon(Icons.chat_bubble),
-                isSelected: _showChat,
+                icon: const Icon(HugeIcons.stroke_rounded_chat_bot),
                 tooltip: _showChat ? 'Hide Chat Panel' : 'Show Chat Panel',
               ),
             ]),

@@ -23,11 +23,10 @@ class _HomePageState extends State<HomePage> {
 
   var _selectedIndex = 0;
   var _showChat = false;
-  static const _chatPanelWeight = 0.3;
   static const _title = 'Effective Dart';
 
   final _controller = SplitViewController(
-    weights: [1.0 - _chatPanelWeight, _chatPanelWeight],
+    weights: [0.7, 0.3],
     limits: [
       WeightLimit(min: 0.3, max: 0.7),
       WeightLimit(min: 0.3, max: 0.7),
@@ -37,6 +36,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
+            // disable AppBar color change on scroll
+            forceMaterialTransparency: true,
             title: const Text(_title),
             leading: Builder(
               builder: (context) => IconButton(
@@ -72,21 +73,52 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: _showChat
-            ? SplitView(
-                viewMode: SplitViewMode.Horizontal,
-                controller: _controller,
-                indicator: Transform.rotate(
-                  angle: 1.5708, // 90 degrees * π/180
-                  child: const Icon(
-                    Icons.drag_handle,
-                    color: Colors.white,
+            ? Padding(
+                padding: const EdgeInsets.all(8),
+                child: SplitView(
+                  viewMode: SplitViewMode.Horizontal,
+                  controller: _controller,
+                  gripColor: Colors.transparent,
+                  gripColorActive: const Color.fromARGB(10, 0, 0, 0),
+                  indicator: Transform.rotate(
+                    angle: 1.5708, // 90 degrees * π/180
+                    child: const Icon(
+                      Icons.drag_handle,
+                      color: Colors.black,
+                    ),
                   ),
+                  children: [
+                    FramedBox(
+                      child: MarkdownFromAssetView(Assets.bookContent.index),
+                    ),
+                    const FramedBox(
+                      child: ChatView(),
+                    ),
+                  ],
                 ),
-                children: [
-                  MarkdownFromAssetView(Assets.bookContent.index),
-                  const ChatView(),
-                ],
               )
-            : MarkdownFromAssetView(Assets.bookContent.index),
+            : Padding(
+                padding: const EdgeInsets.all(8),
+                child: FramedBox(
+                  child: MarkdownFromAssetView(Assets.bookContent.index),
+                ),
+              ),
+      );
+}
+
+class FramedBox extends StatelessWidget {
+  const FramedBox({
+    required this.child,
+    super.key,
+  });
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black, width: 1),
+        ),
+        child: child,
       );
 }
